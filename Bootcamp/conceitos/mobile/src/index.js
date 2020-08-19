@@ -8,7 +8,6 @@ import {
   StyleSheet,
   FlatList,
   StatusBar,
-  TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
 
