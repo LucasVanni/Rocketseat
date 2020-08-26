@@ -1,38 +1,50 @@
+/*
+    Rotas devem se preocupar em receber a requisição,
+    enviar para um arquivo que deverá processar ela
+    e devolver uma resposta.
+*/
 import { Router } from 'express';
 /*
 parseIso => Converte uma string que vem do front-end
         para um formato date nativo do JavaScript.
     startOfHour => Pega uma data qualquer e transforma os minutos como sendo 0, segundos como sendo 0, horas como sendo 0. coloca no começo da hora.
 */
-import { parseISO, startOfHour, isEqual } from 'date-fns';
+import { parseISO } from 'date-fns';
 
-import Appointment from '../models/Appointment';
+import AppointmentsRepository from '../repositories/AppointmentsRepository';
+import CreateAppointmentService from '../service/CreateAppointmentService';
 
-const routes = Router();
+const appointmentRoutes = Router();
 
-const appointments: Appointment[] = [];
+const appointmentsRepository = new AppointmentsRepository();
 
-// Registrando reserva
-routes.post('/', (req, res) => {
-    const { provider, date } = req.body;
+// Listando reservas
+appointmentRoutes.get('/', (req, res) => {
+    const appointments = appointmentsRepository.all();
 
-    const parsedDate = startOfHour(parseISO(date));
-
-    const findAppointmentInSameDate = appointments.find(appointment =>
-        isEqual(parsedDate, appointment.date),
-    );
-
-    if (findAppointmentInSameDate) {
-        return res
-            .status(400)
-            .json({ message: 'This appointment is already booked' });
-    }
-
-    const appointment = new Appointment(provider, parsedDate);
-
-    appointments.push(appointment);
-
-    return res.send(appointment);
+    return res.json(appointments);
 });
 
-export default routes;
+// Registrando reserva
+appointmentRoutes.post('/', (req, res) => {
+    try {
+        const { provider, date } = req.body;
+
+        const parsedDate = parseISO(date);
+
+        const createAppointment = new CreateAppointmentService(
+            appointmentsRepository,
+        );
+
+        const appointment = createAppointment.execute({
+            provider,
+            date: parsedDate,
+        });
+
+        return res.json(appointment);
+    } catch (err) {
+        return res.status(400).json({ error: err.message });
+    }
+});
+
+export default appointmentRoutes;
