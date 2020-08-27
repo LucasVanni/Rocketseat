@@ -7,7 +7,6 @@ import { Router } from 'express';
 /*
 parseIso => Converte uma string que vem do front-end
         para um formato date nativo do JavaScript.
-    startOfHour => Pega uma data qualquer e transforma os minutos como sendo 0, segundos como sendo 0, horas como sendo 0. coloca no começo da hora.
 */
 import { parseISO } from 'date-fns';
 
@@ -16,10 +15,12 @@ import CreateAppointmentService from '../service/CreateAppointmentService';
 
 const appointmentRoutes = Router();
 
+// Instanciando repositório
 const appointmentsRepository = new AppointmentsRepository();
 
 // Listando reservas
-appointmentRoutes.get('/', (req, res) => {
+appointmentRoutes.get('/', (_req, res) => {
+    // Acessa o método que retornará a lista completa existente no banco de dados.
     const appointments = appointmentsRepository.all();
 
     return res.json(appointments);
@@ -27,22 +28,37 @@ appointmentRoutes.get('/', (req, res) => {
 
 // Registrando reserva
 appointmentRoutes.post('/', (req, res) => {
+    // Usado para tratativas de erros. Se deu certo ele caí no try
     try {
         const { provider, date } = req.body;
 
+        // Transformando a hora de tipo string para tipo Date
         const parsedDate = parseISO(date);
 
+        /*
+            Instânciando o service para criação do appointment,
+                passando como parâmetro o mesmo repositório para
+                toda aplicação.
+        */
         const createAppointment = new CreateAppointmentService(
             appointmentsRepository,
         );
 
+        /*
+            Faz todo o processo de validação envio,
+                criação das informações, toda regra
+                de negócios.
+        */
         const appointment = createAppointment.execute({
             provider,
             date: parsedDate,
         });
 
+        // Retorna o appointment criado
         return res.json(appointment);
+        // Usado para tratativas de erros.Se deu errado caí nesse catch
     } catch (err) {
+        // Erro retornado
         return res.status(400).json({ error: err.message });
     }
 });

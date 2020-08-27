@@ -3,11 +3,14 @@ import express from 'express';
 
 import routes from './routes';
 
+// Importando a conexão do banco
+import './database';
+
 const app = express();
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
     return res.json({ message: 'Welcome to goBarber api' });
 });
 
