@@ -20,6 +20,7 @@ export default class CreateAppointments1598559010639
                             uuid
                         */
                         generationStrategy: 'uuid',
+                        default: 'uuid_generate_v4()',
                     },
                     {
                         name: 'provider',
@@ -28,7 +29,7 @@ export default class CreateAppointments1598559010639
                         isNullable: false,
                     },
                     {
-                        name: 'Date',
+                        name: 'date',
                         /*
                             Se não estiver utilizando postgres
                             podemos utilizar somente timestamp,

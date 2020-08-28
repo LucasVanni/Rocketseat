@@ -4,6 +4,9 @@
     e devolver uma resposta.
 */
 import { Router } from 'express';
+
+import { getCustomRepository } from 'typeorm';
+
 /*
 parseIso => Converte uma string que vem do front-end
         para um formato date nativo do JavaScript.
@@ -16,18 +19,21 @@ import CreateAppointmentService from '../service/CreateAppointmentService';
 const appointmentRoutes = Router();
 
 // Instanciando repositório
-const appointmentsRepository = new AppointmentsRepository();
+// const appointmentsRepository = new AppointmentsRepository();
 
 // Listando reservas
-appointmentRoutes.get('/', (_req, res) => {
+appointmentRoutes.get('/', async (_req, res) => {
+    const appointmentsRepository = getCustomRepository(AppointmentsRepository);
+
     // Acessa o método que retornará a lista completa existente no banco de dados.
-    const appointments = appointmentsRepository.all();
+    // ! const appointments = appointmentsRepository.all();
+    const appointments = await appointmentsRepository.find();
 
     return res.json(appointments);
 });
 
 // Registrando reserva
-appointmentRoutes.post('/', (req, res) => {
+appointmentRoutes.post('/', async (req, res) => {
     // Usado para tratativas de erros. Se deu certo ele caí no try
     try {
         const { provider, date } = req.body;
@@ -40,16 +46,17 @@ appointmentRoutes.post('/', (req, res) => {
                 passando como parâmetro o mesmo repositório para
                 toda aplicação.
         */
-        const createAppointment = new CreateAppointmentService(
-            appointmentsRepository,
-        );
+        // ! const createAppointment = new CreateAppointmentService(
+        // !    appointmentsRepository,
+        // ! );
+        const createAppointment = new CreateAppointmentService();
 
         /*
             Faz todo o processo de validação envio,
                 criação das informações, toda regra
                 de negócios.
         */
-        const appointment = createAppointment.execute({
+        const appointment = await createAppointment.execute({
             provider,
             date: parsedDate,
         });

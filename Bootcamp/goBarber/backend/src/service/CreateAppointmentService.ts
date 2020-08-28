@@ -4,6 +4,8 @@
 */
 import { startOfHour } from 'date-fns';
 
+import { getCustomRepository } from 'typeorm';
+
 // A classe Appointment é a estrutura das informações da tabela
 import Appointment from '../models/Appointment';
 
@@ -24,7 +26,7 @@ interface RequestDTO {
 // Service nunca terá acesso a requisição nem a resposta da rota.
 class CreateAppointmentService {
     // Variável que será usada na classe.
-    private appointmentsRepository: AppointmentsRepository;
+    // private appointmentsRepository: AppointmentsRepository;
 
     // Repositório recebido como parâmetro para ser o mesmo.
     /*
@@ -42,19 +44,23 @@ class CreateAppointmentService {
             tenho que importar essa classe e passar
             como sendo um tipo
     */
-    constructor(appointmentsRepository: AppointmentsRepository) {
-        /* Fazemos com que a variável receba o repositório que
-            veio como parâmetro
-        */
-        this.appointmentsRepository = appointmentsRepository;
-    }
+    // constructor(appointmentsRepository: AppointmentsRepository) {
+    //     /* Fazemos com que a variável receba o repositório que
+    //         veio como parâmetro
+    //     */
+    //     this.appointmentsRepository = appointmentsRepository;
+    // }
 
-    public execute({ provider, date }: RequestDTO): Appointment {
+    public async execute({ provider, date }: RequestDTO): Promise<Appointment> {
+        const appointmentsRepository = getCustomRepository(
+            AppointmentsRepository,
+        );
+
         // Permite que o usuário crie o appointment de hora em hora
         const appointmentDate = startOfHour(date);
 
         // Passando a hora para o método que irá checar se já tem um agendamento naquela hora
-        const findAppointmentInSameDate = this.appointmentsRepository.findByDate(
+        const findAppointmentInSameDate = await appointmentsRepository.findByDate(
             appointmentDate,
         );
 
@@ -64,11 +70,15 @@ class CreateAppointmentService {
             throw Error('This appointment is already booked');
         }
 
-        // Retorna o appointment criado no repositório para a variável appointment
-        const appointment = this.appointmentsRepository.create({
+        // ! não vale mais | Retorna o appointment criado no repositório para a variável appointment
+        // Somente cria um objeto/instância do appointments, mas não salva
+        const appointment = appointmentsRepository.create({
             provider,
             date: appointmentDate,
         });
+
+        // Para salvar ( Sempre deveremos esperar o retorno )
+        await appointmentsRepository.save(appointment);
 
         // Retorna para o front end
         return appointment;
