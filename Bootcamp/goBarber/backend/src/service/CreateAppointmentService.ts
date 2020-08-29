@@ -6,6 +6,8 @@ import { startOfHour } from 'date-fns';
 
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
+
 // A classe Appointment é a estrutura das informações da tabela
 import Appointment from '../models/Appointment';
 
@@ -70,7 +72,7 @@ class CreateAppointmentService {
         // Se encontrar irá retornar erro para a rota
         if (findAppointmentInSameDate) {
             // Dá um throw dentro de um erro.
-            throw new Error('This appointment is already booked');
+            throw new AppError('This appointment is already booked');
         }
 
         // ! não vale mais | Retorna o appointment criado no repositório para a variável appointment

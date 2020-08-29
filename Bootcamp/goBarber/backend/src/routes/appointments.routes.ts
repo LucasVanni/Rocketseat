@@ -38,40 +38,33 @@ appointmentRoutes.get('/', async (_req, res) => {
 
 // Registrando reserva
 appointmentRoutes.post('/', async (req, res) => {
-    // Usado para tratativas de erros. Se deu certo ele caí no try
-    try {
-        const { provider_id, date } = req.body;
+    const { provider_id, date } = req.body;
 
-        // Transformando a hora de tipo string para tipo Date
-        const parsedDate = parseISO(date);
+    // Transformando a hora de tipo string para tipo Date
+    const parsedDate = parseISO(date);
 
-        /*
+    /*
             Instânciando o service para criação do appointment,
                 passando como parâmetro o mesmo repositório para
                 toda aplicação.
         */
-        // ! const createAppointment = new CreateAppointmentService(
-        // !    appointmentsRepository,
-        // ! );
-        const createAppointment = new CreateAppointmentService();
+    // ! const createAppointment = new CreateAppointmentService(
+    // !    appointmentsRepository,
+    // ! );
+    const createAppointment = new CreateAppointmentService();
 
-        /*
+    /*
             Faz todo o processo de validação envio,
                 criação das informações, toda regra
                 de negócios.
         */
-        const appointment = await createAppointment.execute({
-            provider_id,
-            date: parsedDate,
-        });
+    const appointment = await createAppointment.execute({
+        provider_id,
+        date: parsedDate,
+    });
 
-        // Retorna o appointment criado
-        return res.json(appointment);
-        // Usado para tratativas de erros.Se deu errado caí nesse catch
-    } catch (err) {
-        // Erro retornado
-        return res.status(400).json({ error: err.message });
-    }
+    // Retorna o appointment criado
+    return res.json(appointment);
 });
 
 export default appointmentRoutes;
