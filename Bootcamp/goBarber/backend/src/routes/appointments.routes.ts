@@ -36,7 +36,7 @@ appointmentRoutes.get('/', async (_req, res) => {
 appointmentRoutes.post('/', async (req, res) => {
     // Usado para tratativas de erros. Se deu certo ele caí no try
     try {
-        const { provider, date } = req.body;
+        const { provider_id, date } = req.body;
 
         // Transformando a hora de tipo string para tipo Date
         const parsedDate = parseISO(date);
@@ -57,7 +57,7 @@ appointmentRoutes.post('/', async (req, res) => {
                 de negócios.
         */
         const appointment = await createAppointment.execute({
-            provider,
+            provider_id,
             date: parsedDate,
         });
 

@@ -1,7 +1,17 @@
 // import { v4 as uuid } from 'uuid';
 // Comunica para o banco que esse model está relacionado a uma tabela
 // Entity => Algo que irá ser salvo no banco de dados, uma entidade
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+    ManyToOne,
+    JoinColumn,
+} from 'typeorm';
+
+import User from './User';
 
 // Responsável pelo formato dos dados que serão salvo.
 /*
@@ -23,11 +33,27 @@ class Appointment {
         assume o valor varchar
     */
     @Column()
-    provider: string;
+    provider_id: string;
+
+    /*
+        Um para Um (OneToOne) => Um usuário tem um e só um agendamento.
+        Um para Muitos (OneToMany) => Um usuário tem muitos agendamentos.
+        Muitos para Muitos (ManyToMany) => Como se muitos usuários pudessem participar do mesmo agendamentos.
+    */
+    // Muitos agendamentos para um usuário
+    @ManyToOne(() => User)
+    // Qual coluna que irá identificar o usuário do agendamento
+    @JoinColumn({ name: 'provider_id' })
+    provider: User;
 
     @Column('time with time zone')
     date: Date;
 
+    @CreateDateColumn()
+    created_at: Date;
+
+    @UpdateDateColumn()
+    updated_at: Date;
     /*
         É utilizado para que quando eu instânciar a class
         (new Appointment()) consiga passar parâmetros para

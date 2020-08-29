@@ -12,7 +12,7 @@ export default class CreateAppointments1598559010639
                         // Nome da coluna
                         name: 'id',
                         // Tipo da coluna
-                        type: 'varchar',
+                        type: 'uuid',
                         // Chave primária
                         isPrimary: true,
                         /* Estratégia de geração, para gerar o campo
@@ -26,7 +26,7 @@ export default class CreateAppointments1598559010639
                         name: 'provider',
                         type: 'varchar',
                         // Não é possível ter valores nulos
-                        isNullable: false,
+                        // Padrão isNullable: false,
                     },
                     {
                         name: 'date',
@@ -38,7 +38,17 @@ export default class CreateAppointments1598559010639
                             junto.
                         */
                         type: 'timestamp with time zone',
-                        isNullable: false,
+                        // Padrão isNullable: false,
+                    },
+                    {
+                        name: 'created_at',
+                        type: 'timestamp',
+                        default: 'now()',
+                    },
+                    {
+                        name: 'updated_at',
+                        type: 'timestamp',
+                        default: 'now()',
                     },
                 ],
             }),

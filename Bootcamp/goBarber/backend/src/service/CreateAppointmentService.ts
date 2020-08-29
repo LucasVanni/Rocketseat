@@ -17,7 +17,7 @@ import AppointmentsRepository from '../repositories/AppointmentsRepository';
     do service chamamos de Request
 */
 interface RequestDTO {
-    provider: string;
+    provider_id: string;
     date: Date;
 }
 
@@ -51,7 +51,10 @@ class CreateAppointmentService {
     //     this.appointmentsRepository = appointmentsRepository;
     // }
 
-    public async execute({ provider, date }: RequestDTO): Promise<Appointment> {
+    public async execute({
+        provider_id,
+        date,
+    }: RequestDTO): Promise<Appointment> {
         const appointmentsRepository = getCustomRepository(
             AppointmentsRepository,
         );
@@ -67,13 +70,13 @@ class CreateAppointmentService {
         // Se encontrar irá retornar erro para a rota
         if (findAppointmentInSameDate) {
             // Dá um throw dentro de um erro.
-            throw Error('This appointment is already booked');
+            throw new Error('This appointment is already booked');
         }
 
         // ! não vale mais | Retorna o appointment criado no repositório para a variável appointment
         // Somente cria um objeto/instância do appointments, mas não salva
         const appointment = appointmentsRepository.create({
-            provider,
+            provider_id,
             date: appointmentDate,
         });
 
