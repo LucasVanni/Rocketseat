@@ -1,5 +1,7 @@
 import React from 'react';
 
-const App: React.FC = () => <h1>Hello</h1>;
+import Header from './Components/Header'
+
+const App: React.FC = () => <Header headerText="Hello Boot Camp"  />;
 
 export default App;
