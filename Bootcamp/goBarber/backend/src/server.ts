@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import express, { Request, Response, NextFunction } from 'express';
 
+import cors from 'cors';
+
 import 'express-async-errors';
 
 import routes from './routes';
@@ -15,6 +17,13 @@ import uploadConfig from './config/upload';
 import './database';
 
 const app = express();
+
+// Libera a aplicação para acessar a url do cors
+app.use(
+    cors({
+        origin: 'http://localhost:3000',
+    }),
+);
 
 app.use(express.json());
 
