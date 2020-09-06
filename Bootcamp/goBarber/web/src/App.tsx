@@ -1,7 +1,15 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-import Header from './Components/Header'
+import Rotes from './routes';
+import GlobalStyle from './styles/global';
 
-const App: React.FC = () => <Header headerText="Hello Boot Camp"  />;
-
+const App: React.FC = () => (
+    <>
+        <BrowserRouter>
+            <Rotes />
+        </BrowserRouter>
+        <GlobalStyle />
+    </>
+);
 export default App;
