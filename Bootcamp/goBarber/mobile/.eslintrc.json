@@ -31,6 +31,9 @@
     "rules": {
         "react/jsx-indent": ["error", 4],
         "react/jsx-indent-props": ["error", 4],
+        "react/jsx-props-no-spreading": "off",
+        "react/prop-types": "off",
+        "no-unused-expressions": "off",
         "prettier/prettier": "error",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
