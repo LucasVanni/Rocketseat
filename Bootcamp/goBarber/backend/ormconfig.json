@@ -6,7 +6,7 @@
     "password": "docker",
     "database": "gostack_gobarber",
     "entities": [
-        "./src/models/**/typeorm/entities/*.ts"
+        "./src/modules/**/typeorm/entities/*.ts"
     ],
     "migrations": [
         "./src/shared/infra/typeorm/migrations/*.ts"
