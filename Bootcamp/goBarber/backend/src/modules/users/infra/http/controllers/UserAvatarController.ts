@@ -5,8 +5,6 @@ import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarSer
 
 import UserMap from '@modules/users/mappers/UserMap';
 
-const userMap = new UserMap();
-
 export default class UserAvatarController {
     public async update(req: Request, res: Response): Promise<Response> {
         const { id: user_id } = req.user;
@@ -19,7 +17,7 @@ export default class UserAvatarController {
             avatarFilename,
         });
 
-        const userWithoutPassword = userMap.UserWithoutPassword(user);
+        const userWithoutPassword = UserMap.UserWithoutPassword(user);
 
         return res.json(userWithoutPassword);
     }

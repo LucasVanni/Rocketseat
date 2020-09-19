@@ -5,8 +5,6 @@ import AuthenticateUserService from '@modules/users/services/AuthenticateUserSer
 
 import UserMap from '@modules/users/mappers/UserMap';
 
-const userMap = new UserMap();
-
 export default class SessionsController {
     public async create(req: Request, res: Response): Promise<Response> {
         const { email, password } = req.body;
@@ -18,7 +16,7 @@ export default class SessionsController {
             password,
         });
 
-        const userWithoutPassword = userMap.UserWithoutPassword(user);
+        const userWithoutPassword = UserMap.UserWithoutPassword(user);
 
         return res.json({ userWithoutPassword, token });
     }

@@ -5,8 +5,6 @@ import CreateUserService from '@modules/users/services/CreateUserService';
 
 import UserMap from '@modules/users/mappers/UserMap';
 
-const userMap = new UserMap();
-
 export default class UsersController {
     public async create(req: Request, res: Response): Promise<Response> {
         const { name, email, password } = req.body;
@@ -19,7 +17,7 @@ export default class UsersController {
             password,
         });
 
-        const userWithoutPassword = userMap.UserWithoutPassword(user);
+        const userWithoutPassword = UserMap.UserWithoutPassword(user);
 
         return res.json(userWithoutPassword);
     }
