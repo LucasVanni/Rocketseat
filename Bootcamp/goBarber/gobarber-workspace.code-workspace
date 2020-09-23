@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "backend"
+		},
+		{
+			"path": "mobile"
+		},
+		{
+			"path": "web"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "backend"
+	}
+}
