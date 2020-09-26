@@ -3,19 +3,24 @@ import AppError from '@shared/errors/AppError';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import CreateAppointmentService from './CreateAppointmentService';
 
+let fakeAppointmentsRepository: FakeAppointmentsRepository;
+let createAppointment: CreateAppointmentService;
+
 // Categoriza os testes, para melhor organização.
 describe('CreateAppointment', () => {
+    beforeEach(() => {
+        fakeAppointmentsRepository = new FakeAppointmentsRepository();
+
+        createAppointment = new CreateAppointmentService(
+            fakeAppointmentsRepository,
+        );
+    });
+
     /*
         Mesma coisa que escrever test, porem utilizar
         ele facilita na compreensão da frase
     */
     it('should be able to create a new appointment', async () => {
-        const fakeAppointmentsRepository = new FakeAppointmentsRepository();
-
-        const createAppointment = new CreateAppointmentService(
-            fakeAppointmentsRepository,
-        );
-
         const appointment = await createAppointment.execute({
             date: new Date(),
             provider_id: '123123',
@@ -26,12 +31,6 @@ describe('CreateAppointment', () => {
     });
 
     it('should not be able to create two appointments in same date', async () => {
-        const fakeAppointmentsRepository = new FakeAppointmentsRepository();
-
-        const createAppointment = new CreateAppointmentService(
-            fakeAppointmentsRepository,
-        );
-
         const appointmentDate = new Date(2020, 9, 10, 11);
 
         await createAppointment.execute({

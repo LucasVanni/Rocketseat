@@ -32,7 +32,7 @@ app.get('/', (_req, res) => {
     return res.json({ message: 'Welcome to goBarber api' });
 });
 
-app.use('/files', express.static(uploadConfig.directory));
+app.use('/files', express.static(uploadConfig.uploadsFolder));
 
 app.use(routes);
 
