@@ -1,5 +1,5 @@
 // Arquivo onde faremos a conexão com o banco de dados
-import { createConnection } from 'typeorm';
+import { createConnections } from 'typeorm';
 
 // Criando a conexão.
 /*
@@ -16,4 +16,4 @@ import { createConnection } from 'typeorm';
     do ormconfig.json colocamos as credênciais
     do banco alí
 */
-createConnection();
+createConnections();
