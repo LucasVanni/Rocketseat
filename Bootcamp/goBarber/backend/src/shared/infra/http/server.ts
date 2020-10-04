@@ -1,19 +1,16 @@
 /* eslint-disable no-console */
 import 'reflect-metadata';
+
 import express, { Request, Response, NextFunction } from 'express';
-
 import cors from 'cors';
-
+import { errors } from 'celebrate';
 import 'express-async-errors';
 
 import uploadConfig from '@config/upload';
-
 import AppError from '@shared/errors/AppError';
-
 import routes from './routes';
 
 import '@shared/container';
-
 // Importando a conexão do banco
 import '@shared/infra/typeorm';
 
@@ -25,16 +22,14 @@ app.use(
         origin: 'http://localhost:3000',
     }),
 );
-
 app.use(express.json());
-
 app.get('/', (_req, res) => {
     return res.json({ message: 'Welcome to goBarber api' });
 });
-
 app.use('/files', express.static(uploadConfig.uploadsFolder));
-
 app.use(routes);
+
+app.use(errors());
 
 // Será o middleware da tratativa de erros
 app.use(
