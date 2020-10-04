@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import CreateUserService from '@modules/users/services/CreateUserService';
-
-import UserMap from '@modules/users/mappers/UserMap';
 
 export default class UsersController {
     public async create(req: Request, res: Response): Promise<Response> {
@@ -17,8 +16,6 @@ export default class UsersController {
             password,
         });
 
-        const userWithoutPassword = UserMap.UserWithoutPassword(user);
-
-        return res.json(userWithoutPassword);
+        return res.json(classToClass(user));
     }
 }
