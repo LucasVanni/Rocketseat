@@ -9,6 +9,7 @@ import 'express-async-errors';
 
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
+import rateLimiter from './middlewares/RateLimiter';
 import routes from './routes';
 
 import '@shared/container';
@@ -18,6 +19,7 @@ import '@shared/infra/typeorm';
 const app = express();
 
 // Libera a aplicação para acessar a url do cors
+app.use(rateLimiter);
 app.use(
     cors({
         origin: 'http://localhost:3000',
