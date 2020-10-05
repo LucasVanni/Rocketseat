@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import styled, { css } from 'styled-components';
 
 import { animated } from 'react-spring';
 
 interface ContainerProps {
     type?: 'success' | 'error' | 'info';
-    hasDescription: boolean;
+    hasDescription: number;
 }
 
 const toastTypesVariations = {
